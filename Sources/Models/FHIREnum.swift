@@ -24,23 +24,23 @@ public func createEnum<E: RawRepresentable>(type: E.Type, for key: String, in js
 	}
 	context.insertKey(key)
 	
-	// correct type?
-	guard let value = exist as? E.RawValue else {
-		context.addError(FHIRValidationError(key: key, wants: E.RawValue.self, has: type(of: exist)))
-		return nil
-	}
-	
-	// create enum
-	guard let enumval = E(rawValue: value) else {
-		context.addError(FHIRValidationError(key: key, problem: "“\(value)” is not valid"))
-		return nil
-	}
-	if let _ = json["_\(key)"] as? FHIRJSON {
-		context.insertKey("_\(key)")
-		// TODO: populate from "_key"
-		fhir_warn("Not implemented: extension for enums for key “_\(key)”")
-	}
-	return enumval
+    // correct type?
+    guard let value = exist as? E.RawValue else {
+        context.addError(FHIRValidationError(key: key, wants: E.RawValue.self, has: Swift.type(of: exist)))
+        return nil
+    }
+    
+    // create enum
+    guard let enumval = E(rawValue: value) else {
+        context.addError(FHIRValidationError(key: key, problem: "“\(value)” is not valid"))
+        return nil
+    }
+    if let _ = json["_\(key)"] as? FHIRJSON {
+        context.insertKey("_\(key)")
+        // TODO: populate from "_key"
+        fhir_warn("Not implemented: extension for enums for key “_\(key)”")
+    }
+    return enumval
 }
 
 
@@ -59,27 +59,27 @@ public func createEnums<E: RawRepresentable>(of type: E.Type, for key: String, i
 	}
 	context.insertKey(key)
 	
-	// correct type?
-	guard let val = exist as? [E.RawValue] else {
-		context.addError(FHIRValidationError(key: key, wants: Array<E.RawValue>.self, has: type(of: exist)))
-		return nil
-	}
-	
-	// loop over raw values and create enums
-	var enums = [E]()
-	for (i, value) in val.enumerated() {
-		guard let enumval = E(rawValue: value) else {
-			context.addError(FHIRValidationError(key: "\(key).\(i)", problem: "“\(value)” is not valid"))
-			continue
-		}
-		enums.append(enumval)
-	}
-	if let _ = json["_\(key)"] as? FHIRJSON {
-		context.insertKey("_\(key)")
-		// TODO: populate from "_key"
-		fhir_warn("Not implemented: extension for enums for key “_\(key)”")
-	}
-	return enums
+    // correct type?
+    guard let val = exist as? [E.RawValue] else {
+        context.addError(FHIRValidationError(key: key, wants: Array<E.RawValue>.self, has: Swift.type(of: exist)))
+        return nil
+    }
+    
+    // loop over raw values and create enums
+    var enums = [E]()
+    for (i, value) in val.enumerated() {
+        guard let enumval = E(rawValue: value) else {
+            context.addError(FHIRValidationError(key: "\(key).\(i)", problem: "“\(value)” is not valid"))
+            continue
+        }
+        enums.append(enumval)
+    }
+    if let _ = json["_\(key)"] as? FHIRJSON {
+        context.insertKey("_\(key)")
+        // TODO: populate from "_key"
+        fhir_warn("Not implemented: extension for enums for key “_\(key)”")
+    }
+    return enums
 }
 
 
