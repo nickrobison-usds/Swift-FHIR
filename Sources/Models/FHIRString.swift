@@ -105,10 +105,9 @@ extension FHIRString: Equatable, Comparable, Hashable {
 	public static func <(lh: FHIRString, rh: String) -> Bool {
 		return lh.string < rh
 	}
-	
-	
-	public var hashValue: Int {
-        return string.hashValue
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(string)
     }
 }
 
